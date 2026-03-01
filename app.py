@@ -160,7 +160,7 @@ mount_sum = 0
 for i in range(1, 7):
     mount_sum += st.session_state.results[str(i)]
 
-sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=True)
+sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=False)
 for num, amt in sorted_results:
     win_lose = (6 * amt - mount_sum) / 10000
     is_win = "赢" if win_lose > 0 else "输"
@@ -208,6 +208,7 @@ with col2:
 with st.expander("📝 操作日志 (点击展开/折叠)", expanded=True):
     for m in st.session_state.logs:
         st.text(m)
+
 
 
 
