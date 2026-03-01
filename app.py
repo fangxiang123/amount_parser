@@ -117,10 +117,7 @@ def process_data():
                         add_to_results(d, share)
 
     log("✅ 累加成功！")
-    log("\n  [当前排名 - 降序]")
-    sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=True)
-    for num, amt in sorted_results:
-        log(f"  数字 {num} : {amt:.2f}")
+
 
     # 【关键修改】处理完毕后，强制清空绑定的状态值
     st.session_state.input_text = ""
@@ -150,11 +147,10 @@ mount_sum = 0
 for i in range(1, 7):
     mount_sum += st.session_state.results[str(i)]
 
-for i in range(1, 7):
-    # 用求余运算决定放在左列 (0) 还是右列 (1)
+sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=True)
+for num, amt in sorted_results:
     col = cols[0]
-    val = st.session_state.results[str(i)]
-    col.metric(label=f"数字 {i}", value=f"当前下注：{val:.2f}\n预计输赢：{6 * val - mount_sum:.2f}")
+    col.metric(value=f"{num}当前下注：{amt:.2f}\n预计输赢：{6 * amt - mount_sum:.2f}")
 
 st.divider()
 
