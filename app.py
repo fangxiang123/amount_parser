@@ -162,8 +162,13 @@ for i in range(1, 7):
 
 sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=True)
 for num, amt in sorted_results:
-    st.metric(label=f"数字 {num}", value=f"{num}当前下注：{amt:.2f} 预计输赢：{(6 * amt - mount_sum)/10000:.2f}",label_visibility="collapsed")
-    # st.metric(label=f"数字 {num}", value=f"{num}预计输赢：{6 * amt - mount_sum:.2f}",label_visibility="collapsed")
+    win_lose = (6 * amt - mount_sum) / 10000
+
+    st.metric(
+        label=f"数字 {num}", 
+        value=f"下注: {amt:.2f}", 
+        delta=f"预计输赢: {win_lose:.2f}",
+    )
 
 st.divider()
 
@@ -190,6 +195,7 @@ with col2:
 with st.expander("📝 操作日志 (点击展开/折叠)", expanded=True):
     for m in st.session_state.logs:
         st.text(m)
+
 
 
 
