@@ -154,7 +154,7 @@ for i in range(1, 7):
     # 用求余运算决定放在左列 (0) 还是右列 (1)
     col = cols[(i - 1) % 2]
     val = st.session_state.results[str(i)]
-    col.metric(label=f"数字 {i}", value=f"{val:.2f} 预计输赢：{6 * val - mount_sum:.2f}")
+    col.metric(label=f"数字 {i}", value=f"当前下注：{val:.2f}\t预计输赢：{6 * val - mount_sum:.2f}")
 
 st.divider()
 
