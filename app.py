@@ -163,12 +163,25 @@ for i in range(1, 7):
 sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=True)
 for num, amt in sorted_results:
     win_lose = (6 * amt - mount_sum) / 10000
+    is_win = "赢" if win_lose > 0 else "输"
 
-    st.metric(
-        label=f"数字 {num}", 
-        value=f"下注: {amt:.2f}", 
-        delta=f"预计输赢: {win_lose:.2f}",
-    )
+    # 可选版本1
+    # st.metric(
+    #     label=f"数字 {num}", 
+    #     value=f"下注: {amt:.2f}", 
+    #     delta=f"预计{is_win}: {win_lose:.2f}",
+    # )
+
+    # 根据输赢决定颜色：赢是红色/绿色，输是灰色/绿色等
+    color = "red" if win_lose > 0 else "green"
+    
+    st.markdown(f"""
+    <div style="background-color: #f0f2f6; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">数字 {num}</div>
+        <div style="font-size: 14px; color: #333;">当前下注：<b>{amt:.2f}</b></div>
+        <div style="font-size: 14px; color: #333;">预计输赢：<b style="color: {color};">{win_lose:.2f}</b></div>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.divider()
 
@@ -195,6 +208,7 @@ with col2:
 with st.expander("📝 操作日志 (点击展开/折叠)", expanded=True):
     for m in st.session_state.logs:
         st.text(m)
+
 
 
 
