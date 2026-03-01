@@ -141,16 +141,25 @@ st.markdown(f"**当前回合: 第 {st.session_state.round_num} 回合**")
 
 # --- 金额显示面板 ---
 st.subheader("📊 当前累计金额")
-# 【关键修改】设置 2 列，循环时自动形成 3 行 2 列的布局
-cols = st.columns(1)
+
+# 保留优化手机端显示的 CSS，防止超大金额被截断
+st.markdown("""
+<style>
+div[data-testid="stMetricValue"] {
+    font-size: 1.5rem !important;      /* 调整字体大小 */
+    white-space: normal !important;    /* 允许文本自动换行 */
+    word-wrap: break-word !important;  /* 强制打断换行 */
+}
+</style>
+""", unsafe_allow_html=True)
+
 mount_sum = 0
 for i in range(1, 7):
     mount_sum += st.session_state.results[str(i)]
 
 sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=True)
 for num, amt in sorted_results:
-    col = cols[0]
-    col.metric(label=f"数字 {num}", value=f"{num}当前下注：{amt:.2f}\n预计输赢：{6 * amt - mount_sum:.2f}")
+    st.metric(label=f"数字 {num}", value=f"{num}当前下注：{amt:.2f}\n预计输赢：{6 * amt - mount_sum:.2f}")
 
 st.divider()
 
@@ -177,3 +186,4 @@ with col2:
 with st.expander("📝 操作日志 (点击展开/折叠)", expanded=True):
     for m in st.session_state.logs:
         st.text(m)
+
