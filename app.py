@@ -163,7 +163,7 @@ for i in range(1, 7):
 sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=False)
 for num, amt in sorted_results:
     win_lose = (6 * amt - mount_sum)
-    is_win = "赢" if win_lose > 0 else "输"
+    is_win = "预计赢" if win_lose > 0 else "预计输"
 
     # 可选版本1
     # st.metric(
@@ -173,13 +173,26 @@ for num, amt in sorted_results:
     # )
 
     # 根据输赢决定颜色：赢是红色/绿色，输是灰色/绿色等
-    color = "red" if win_lose > 0 else "green"
+    # 1. 动态判断输赢标签、颜色和显示的数值
+    if win_lose > 0:
+        win_label = "预计赢"
+        color = "red"       # 赢钱通常用红色（或根据你的喜好改为 green）
+        display_val = win_lose
+    elif win_lose < 0:
+        win_label = "预计输"
+        color = "green"     # 输钱用绿色
+        display_val = abs(win_lose)  # 取绝对值，避免出现 "预计输：-50"
+    else:
+        win_label = "预计平局"
+        color = "gray"      # 不输不赢用灰色
+        display_val = 0.0
     
+    # 2. 渲染带有动态标签的 Markdown
     st.markdown(f"""
     <div style="background-color: #f0f2f6; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
         <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #333;">数字 {num}</div>
         <div style="font-size: 14px; color: #333;">当前下注：<b>{amt:.2f}</b></div>
-        <div style="font-size: 14px; color: #333;">预计输赢：<b style="color: {color};">{win_lose:.2f}</b></div>
+        <div style="font-size: 14px; color: #333;">{win_label}：<b style="color: {color};">{display_val:.2f}</b></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -208,6 +221,7 @@ with col2:
 with st.expander("📝 操作日志 (点击展开/折叠)", expanded=True):
     for m in st.session_state.logs:
         st.text(m)
+
 
 
 
