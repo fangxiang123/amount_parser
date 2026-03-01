@@ -142,13 +142,16 @@ st.markdown(f"**当前回合: 第 {st.session_state.round_num} 回合**")
 # --- 金额显示面板 ---
 st.subheader("📊 当前累计金额")
 
-# 保留优化手机端显示的 CSS，防止超大金额被截断
+# 强制覆盖 st.metric 的样式
 st.markdown("""
 <style>
+/* 针对 st.metric 的数值部分 */
 div[data-testid="stMetricValue"] {
-    font-size: 1.5rem !important;      /* 调整字体大小 */
-    white-space: normal !important;    /* 允许文本自动换行 */
-    word-wrap: break-word !important;  /* 强制打断换行 */
+    white-space: normal !important;      /* 允许换行 */
+    word-break: break-all !important;    /* 允许在任意字符间断行（针对超长连续数字） */
+    overflow-wrap: break-word !important; /* 单词换行 */
+    font-size: 1.8rem !important;        /* 可选：适当缩小字体以适应手机屏幕 */
+    line-height: 1.2 !important;         /* 调整换行后的行高 */
 }
 </style>
 """, unsafe_allow_html=True)
@@ -187,6 +190,7 @@ with col2:
 with st.expander("📝 操作日志 (点击展开/折叠)", expanded=True):
     for m in st.session_state.logs:
         st.text(m)
+
 
 
 
