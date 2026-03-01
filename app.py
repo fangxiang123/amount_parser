@@ -145,14 +145,14 @@ st.markdown(f"**当前回合: 第 {st.session_state.round_num} 回合**")
 # --- 金额显示面板 ---
 st.subheader("📊 当前累计金额")
 # 【关键修改】设置 2 列，循环时自动形成 3 行 2 列的布局
-cols = st.columns(3)
+cols = st.columns(1)
 mount_sum = 0
 for i in range(1, 7):
     mount_sum += st.session_state.results[str(i)]
 
 for i in range(1, 7):
     # 用求余运算决定放在左列 (0) 还是右列 (1)
-    col = cols[(i - 1) % 3]
+    col = cols[0]
     val = st.session_state.results[str(i)]
     col.metric(label=f"数字 {i}", value=f"当前下注：{val:.2f}\n预计输赢：{6 * val - mount_sum:.2f}")
 
