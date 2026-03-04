@@ -162,7 +162,8 @@ for i in range(1, 7):
 
 sorted_results = sorted(st.session_state.results.items(), key=lambda item: item[1], reverse=False)
 for num, amt in sorted_results:
-    win_lose = (6 * amt - mount_sum) / 10000
+    fact = 5 if num == 1 else 6
+    win_lose = (fact * amt - mount_sum) / 10000
     is_win = "预计赢" if win_lose > 0 else "预计输"
 
     # 可选版本1
@@ -221,6 +222,7 @@ with col2:
 with st.expander("📝 操作日志 (点击展开/折叠)", expanded=True):
     for m in st.session_state.logs:
         st.text(m)
+
 
 
 
